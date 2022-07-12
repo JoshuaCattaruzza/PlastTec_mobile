@@ -171,7 +171,7 @@ const Home = () => {
                             <svg className="blinking m-2">
                               <circle cx="10" cy="10" r="10" fill="green" />
                             </svg>
-                            {task.image_url === undefined ? (
+                            {task.image_url === "" ? (
                               <>
                                 <input
                                   accept="image/*"
@@ -197,7 +197,7 @@ const Home = () => {
                             Operatore: {task.assignee.name}
                           </Card.Subtitle>
                         </Card.Body>
-                        {task.image_url !== undefined ? (
+                        {task.image_url !== "" ? (
                           <Card.Img
                             src={task.image_url}
                             alt="Card image"
