@@ -15,8 +15,7 @@ const Navigation = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user: currentUser } = useSelector((state) => state.auth);
   const [show, setShow] = useState(false);
-  // const [notification, setNotification] = useState({});
-  const [isConnected, setIsConnected] = useState(false);
+
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
@@ -98,15 +97,15 @@ const Navigation = () => {
         
     }, 10000);
     return  () => clearInterval(intervalId); 
-  },[])
+  },[checkNotification])
 
 
-  const bangleDisconnect = () => {
-    console.log(connection);
-      connection.close();
-      setIsConnected(false)
+  // const bangleDisconnect = () => {
+  //   console.log(connection);
+  //     connection.close();
+  //     setIsConnected(false)
     
-  };
+  // };
 
   const handleClose = () => {
     setShow(false);
