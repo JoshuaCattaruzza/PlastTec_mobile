@@ -96,7 +96,7 @@ const Navigation = () => {
   useEffect(()=>{
     const intervalId = setInterval(() => {
       var sendOnce = true;
-      fetch("http://localhost:4201/api/notification/" + currentUser.username, {
+      fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       }).then((res) => {
