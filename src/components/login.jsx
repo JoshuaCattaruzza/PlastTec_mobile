@@ -16,7 +16,7 @@ const LogIn = () => {
 		dispatch(login(username, password))
 		.then(()=>{
 			// props.history.push("/home");
-          	window.location.reload();
+          	// window.location.reload();
 		})
 
 	};
