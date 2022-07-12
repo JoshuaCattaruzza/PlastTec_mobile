@@ -42,22 +42,22 @@ const Navigation = () => {
     });
   };
   var notification = undefined;
-  const checkNotification = () => {
-    fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    }).then((res) => {
-      return res.json();
-    })
-    .then((data) => {
+  // const checkNotification = () => {
+  //   fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" }
+  //   }).then((res) => {
+  //     return res.json();
+  //   })
+  //   .then((data) => {
       
-      console.log(data)
-      notification = data;
-    }).finally(()=> {
-      if(connection)
-        sendNotification();
-      });
-  };
+  //     console.log(data)
+  //     notification = data;
+  //   }).finally(()=> {
+  //     if(connection)
+  //       sendNotification();
+  //     });
+  // };
   var sendOnce = true;
   const sendNotification = () => { 
     
@@ -94,11 +94,24 @@ const Navigation = () => {
 
   useEffect(()=>{
     const intervalId = setInterval(() => {
-        checkNotification();
+      fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      }).then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        
+        console.log(data)
+        notification = data;
+      }).finally(()=> {
+        if(connection)
+          sendNotification();
+        });
         
     }, 10000);
     return  () => clearInterval(intervalId); 
-  },[checkNotification])
+  },[])
 
 
   // const bangleDisconnect = () => {
