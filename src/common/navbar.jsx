@@ -140,7 +140,7 @@ const Navigation = () => {
         
     }, 10000);
     return  () => clearInterval(intervalId); 
-  },[connection, currentUser.username, notif])
+  },[connection, currentUser, notif])
 
 
   // const bangleDisconnect = () => {
