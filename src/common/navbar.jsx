@@ -15,6 +15,7 @@ const Navigation = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user: currentUser } = useSelector((state) => state.auth);
   const [show, setShow] = useState(false);
+  // const [isConnected, setIsConnected] = useState(false);
 
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -36,7 +37,7 @@ const Navigation = () => {
       }
 
       connection = c;
-      setIsConnected(true)
+      // setIsConnected(true)
       console.log(connection);
     });
   };
