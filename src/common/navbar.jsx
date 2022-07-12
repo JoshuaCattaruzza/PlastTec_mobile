@@ -11,11 +11,12 @@ import BTsvg from "./bluetooth.png";
 import Logo from "./Logo.png";
 import { useEffect } from "react";
 
+
 const Navigation = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { user: currentUser } = useSelector((state) => state.auth);
   const [show, setShow] = useState(false);
-  // const [isConnected, setIsConnected] = useState(false);
+  const [notif, setNotif] = useState({});
 
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -41,7 +42,7 @@ const Navigation = () => {
       console.log(connection);
     });
   };
-  var notification = undefined;
+  // var notification = undefined;
   // const checkNotification = () => {
   //   fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
   //     method: "GET",
@@ -58,43 +59,44 @@ const Navigation = () => {
   //       sendNotification();
   //     });
   // };
-  var sendOnce = true;
-  const sendNotification = () => { 
+  // var sendOnce = true;
+  // const sendNotification = () => { 
     
-    console.log(notification)
-    if(notification !== undefined && notification.notification.hasNotification === true)
-    {
-    var BANGLE_CODE = `  g.clear();
-    g.setFontAlign(0,0); // center font
-    g.setFont("Vector",20); // vector font, 80px  
-    // draw the current counter value
-    E.showMessage("${notification.notification.text}", "${currentUser.username}");
+  //   console.log(notification);
+  //   if(notification !== undefined && notification.notification.hasNotification === true)
+  //   {
+  //   var BANGLE_CODE = `  g.clear();
+  //   g.setFontAlign(0,0); // center font
+  //   g.setFont("Vector",20); // vector font, 80px  
+  //   // draw the current counter value
+  //   E.showMessage("${notification.notification.text}", "${currentUser.username}");
 
-    // optional - this keeps the watch LCD lit up
-    Bangle.setLCDPower(1);
-    })`;
-    console.log(connection);
-    if(sendOnce){
-      setTimeout(function () {
-    connection.write("reset();\n", function () {
-      // Wait for it to reset itself
-      setTimeout(function () {
-        // Now upload our code to it
-        connection.write("\x03\x10if(1){" + BANGLE_CODE + "}\n", function () {
-          console.log("Ready...");
-          sendOnce=false;
-        });
-      }, 1500);
-    }, 2000);
-    });
-  }
+  //   // optional - this keeps the watch LCD lit up
+  //   Bangle.setLCDPower(1);
+  //   })`;
+  //   console.log(connection);
+  //   if(sendOnce){
+  //     setTimeout(function () {
+  //   connection.write("reset();\n", function () {
+  //     // Wait for it to reset itself
+  //     setTimeout(function () {
+  //       // Now upload our code to it
+  //       connection.write("\x03\x10if(1){" + BANGLE_CODE + "}\n", function () {
+  //         console.log("Ready...");
+  //         sendOnce=false;
+  //       });
+  //     }, 1500);
+  //   }, 2000);
+  //   });
+  // }
     
-    }
-  };
+  //   }
+  // };
 
   useEffect(()=>{
     const intervalId = setInterval(() => {
-      fetch("https://api.joshuacattaruzza.com/api/notification/" + currentUser.username, {
+      var sendOnce = true;
+      fetch("http://localhost:4201/api/notification/" + currentUser.username, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
       }).then((res) => {
@@ -103,15 +105,42 @@ const Navigation = () => {
       .then((data) => {
         
         console.log(data)
-        notification = data;
+        setNotif(data);
       }).finally(()=> {
-        if(connection)
-          sendNotification();
+        if(connection){
+          console.log(notif);
+        if(notif !== undefined && notif.notification.hasNotification === true)
+        {
+        var BANGLE_CODE = `  g.clear();
+        g.setFontAlign(0,0); // center font
+        g.setFont("Vector",20); // vector font, 80px  
+        // draw the current counter value
+        E.showMessage("${notif.notification.text}", "${currentUser.username}");
+    
+        // optional - this keeps the watch LCD lit up
+        Bangle.setLCDPower(1);
+        })`;
+        console.log(connection);
+        if(sendOnce){
+          setTimeout(function () {
+        connection.write("reset();\n", function () {
+          // Wait for it to reset itself
+          setTimeout(function () {
+            // Now upload our code to it
+            connection.write("\x03\x10if(1){" + BANGLE_CODE + "}\n", function () {
+              console.log("Ready...");
+              sendOnce=false;
+            });
+          }, 1500);
+        }, 2000);
+        });
+      }
+        }}
         });
         
     }, 10000);
     return  () => clearInterval(intervalId); 
-  },[])
+  },[connection, currentUser.username, notif])
 
 
   // const bangleDisconnect = () => {
